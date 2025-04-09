@@ -26,6 +26,9 @@ export namespace Router {
 
     export function Middleware(...middlewares: any[]) {
         return function (target: any, propertyKey: string) {
+            const hasRoute =
+                target.__routes?.some((r: RouteDefinition) => r.handlerName === propertyKey);
+            if (!hasRoute) return;
             if (!target.__middlewares) target.__middlewares = {};
             if (!target.__middlewares[propertyKey]) {
                 target.__middlewares[propertyKey] = [];
